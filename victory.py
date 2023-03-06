@@ -21,22 +21,25 @@ days = {
     '22':'двадцать второе',
     '25':'двадцать пятое'
 }
+def random_peoples(peoples, count):
+    return random.sample(peoples, count)
 
-while True:
-    results = random.sample(peoples, 5)
-    kol = 0
-    for people in results:
-        question = input(f'Дата рождения {people} в формате dd.mm.yyyy? ')
-        for i, answer in enumerate(peoples):
-            if people == peoples[i]:
-                if question == answers[i]:
-                    kol += 1
-                else:
-                    day, month, year = answers[i].split('.')
-                    print('Правильный ответ: ', days[day], months[month], year, 'года')
-    print('Количество правильных ответов - ', kol)
-    print('Количество ошибок - ', (5 - kol))
-    the_end = input('Повторить игру? (да\нет) ')
-    if the_end == 'нет':
-        break
-print('Игра окончена')
+if __name__ == '__main__':
+    while True:
+        results = random_peoples(peoples, 5)
+        kol = 0
+        for people in results:
+            question = input(f'Дата рождения {people} в формате dd.mm.yyyy? ')
+            for i, answer in enumerate(peoples):
+                if people == peoples[i]:
+                    if question == answers[i]:
+                        kol += 1
+                    else:
+                        day, month, year = answers[i].split('.')
+                        print('Правильный ответ: ', days[day], months[month], year, 'года')
+        print('Количество правильных ответов - ', kol)
+        print('Количество ошибок - ', (5 - kol))
+        the_end = input('Повторить игру? (да\нет) ')
+        if the_end == 'нет':
+            break
+    print('Игра окончена')
