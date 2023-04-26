@@ -26,16 +26,26 @@ if __name__ == '__main__':
 
         choice = input('Выберите пункт меню: ')
         if choice == '1':
-            sum = int(input('Введите сумму пополнения '))
-            balance += sum
+            try:
+                sum = int(input('Введите сумму пополнения '))
+                balance += sum
+            except ValueError:
+                print('Введите сумму числом!')
+            except Exception:
+                print('Неизвестная ошибка!')
         elif choice == '2':
-            purchase = int(input('Введите сумму покупки '))
-            if purchase > balance:
-                print('Недостаточно средств!')
-            else:
-                balance = buy(balance, purchase)
-                name = input('Укажите название покупки ')
-                history.append((name, purchase))
+            try:
+                purchase = int(input('Введите сумму покупки '))
+                if purchase > balance:
+                    print('Недостаточно средств!')
+                else:
+                    balance = buy(balance, purchase)
+                    name = input('Укажите название покупки ')
+                    history.append((name, purchase))
+            except ValueError:
+                print('Введите сумму числом!')
+            except Exception:
+                print('Неизвестная ошибка!')
         elif choice == '3':
             print(history)
         elif choice == '4':
