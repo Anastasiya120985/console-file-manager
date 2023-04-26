@@ -1,20 +1,15 @@
 import os
 import shutil
 import sys
-import pickle
 
 def list_dirs():
-    dirs = []
-    for i in os.listdir():
-        if os.path.isdir(i):
-            dirs.append(i)
+    dir = []
+    dirs = [dir for dir in os.listdir() if os.path.isdir(dir)]
     return dirs
 
 def list_files():
-    files = []
-    for i in os.listdir():
-        if os.path.isfile(i):
-            files.append(i)
+    file = []
+    files = [file for file in os.listdir() if os.path.isfile(file)]
     return files
 
 if __name__ == '__main__':
@@ -35,33 +30,33 @@ if __name__ == '__main__':
 
         choice = input('Выберите пункт меню: ')
         if choice == '1':
-            new_file = str(input('Введите название создаваемой папки: '))
-            if not os.path.exists(new_file):
+            try:
+                new_file = str(input('Введите название создаваемой папки: '))
                 os.mkdir(new_file)
-            else:
+            except FileExistsError:
                 print('Папка с таким названием уже существует!')
+            except Exception:
+                print('Неизвестная ошибка!')
         elif choice == '2':
-            del_file = str(input('Введите название удаляемой папки/файла: '))
-            if os.path.exists(del_file):
-                if os.path.isfile(del_file):
-                    os.remove(del_file)
-                else:
-                    shutil.rmtree(del_file)
-            else:
+            try:
+                del_file = str(input('Введите название удаляемой папки/файла: '))
+                os.remove(del_file) if os.path.isfile(del_file) else shutil.rmtree(del_file)
+            except FileNotFoundError:
                 print('Папка/файл с таким названием отсутствует!')
+            except Exception:
+                print('Неизвестная ошибка!')
         elif choice == '3':
-            current_file = str(input('Введите название копируемой папки/файла: '))
-            if os.path.exists(current_file):
+            try:
+                current_file = str(input('Введите название копируемой папки/файла: '))
                 copy_file = str(input('Введите новое название папки/файла: '))
-                if not os.path.exists(copy_file):
-                    if os.path.isfile(current_file) and os.path.isfile(copy_file):
-                        shutil.copy(current_file, copy_file)
-                    else:
-                        shutil.copytree(current_file, copy_file)
+                if os.path.isfile(current_file) and os.path.isfile(copy_file):
+                    shutil.copy(current_file, copy_file)
                 else:
-                    print('Папка/файл с таким названием уже есть!')
-            else:
+                    shutil.copytree(current_file, copy_file)
+            except FileNotFoundError:
                 print('Папка/файл с таким названием отсутствует!')
+            except FileExistsError:
+                print('Папка/файл с таким названием уже есть!')
         elif choice == '4':
             print('Все папки и файлы: ', os.listdir())
         elif choice == '5':
@@ -86,13 +81,11 @@ if __name__ == '__main__':
             with open('listdir.txt', 'w') as f:
                 f.write('files: ')
                 for file in list_files():
-                    f.write(file)
-                    f.write(' ,')
+                    f.write(f'{file}, ')
                 f.write('\n')
                 f.write('dirs: ')
                 for dirs in list_dirs():
-                    f.write(dirs)
-                    f.write(' ,')
+                    f.write(f'{dirs}, ')
         elif choice == '13':
             break
         else:
