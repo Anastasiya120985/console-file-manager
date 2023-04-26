@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import pickle
 
 def list_dirs():
     dirs = []
@@ -8,6 +9,13 @@ def list_dirs():
         if os.path.isdir(i):
             dirs.append(i)
     return dirs
+
+def list_files():
+    files = []
+    for i in os.listdir():
+        if os.path.isfile(i):
+            files.append(i)
+    return files
 
 if __name__ == '__main__':
     while True:
@@ -22,7 +30,8 @@ if __name__ == '__main__':
         print('9. играть в викторину')
         print('10. мой банковский счет')
         print('11. смена рабочей директории')
-        print('12. выход')
+        print('12. сохранить содержимое рабочей директории в файл')
+        print('13. выход')
 
         choice = input('Выберите пункт меню: ')
         if choice == '1':
@@ -58,11 +67,7 @@ if __name__ == '__main__':
         elif choice == '5':
             print('Все папки: ', list_dirs())
         elif choice == '6':
-            files = []
-            for i in os.listdir():
-                if os.path.isfile(i):
-                    files.append(i)
-            print('Все файлы: ', files)
+            print('Все файлы: ', list_files())
         elif choice == '7':
             print('Информация об операционной системе: ', sys.platform, '(' ,os.name, ')')
         elif choice == '8':
@@ -78,6 +83,17 @@ if __name__ == '__main__':
             os.chdir(path)
             print("Новая директория:", os.getcwd())
         elif choice == '12':
+            with open('listdir.txt', 'w') as f:
+                f.write('files: ')
+                for file in list_files():
+                    f.write(file)
+                    f.write(' ,')
+                f.write('\n')
+                f.write('dirs: ')
+                for dirs in list_dirs():
+                    f.write(dirs)
+                    f.write(' ,')
+        elif choice == '13':
             break
         else:
             print('Неверный пункт меню')
